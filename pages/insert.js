@@ -1,4 +1,6 @@
+
 import Head from 'next/head';
+import { useState } from 'react'
 import Navbar from '../components/Navbar';
 
 function InputName() {
@@ -6,8 +8,9 @@ function InputName() {
   const label = "Name";
   return (
     <div className="form-floating mb-3">
-      <input type="text" className="form-control" id={id} placeholder=""/> 
-      <label for={id}>{label}</label>
+      <input type="text" className="form-control" id={id} name={id}
+      placeholder=""/> 
+      <label forhtml={id}>{label}</label>
     </div>
   );
 }
@@ -17,8 +20,9 @@ function Description() {
   const label = "Description";
   return (
     <div className="form-floating mb-3">
-      <textarea className="form-control" placeholder="" id={id}></textarea>
-      <label for={id}>{label}</label>
+      <textarea className="form-control" placeholder="" id={id} name={id}>
+      </textarea>
+      <label forhtml={id}>{label}</label>
     </div>
   )
 }
@@ -28,8 +32,9 @@ function InputPrice() {
   const label = "Price";
   return (
     <div className="form-floating mb-3">
-      <input type="number" step={0.01} min={0} className="form-control" id={id} placeholder=""/> 
-      <label for={id}>{label}</label>
+      <input type="number" step={0.01} min={0} className="form-control" 
+      d={id} name={id} placeholder=""/> 
+      <label forhtml={id}>{label}</label>
     </div>
   );
 }
@@ -37,10 +42,19 @@ function InputPrice() {
 function InputImage() {
   const label = 'Image';
   const id = 'image';
+  //const [value, setValue] = useState('/public/images/helmet.jpg');
+  const [selectedImage, setSelectedImage] = useState(
+    '/images/helmet.jpg');
+
+  const handleImageChange = (event) => {
+    setSelectedImage(event.target.files[0]);
+  };
+  const value = '/images/helmet.jpg';
   return (
     <div className="mb-3">
-      <label for={id} className="form-label">{label}</label>
-      <input className="form-control" type="file" id={id} />
+      <label forhtml={id} className="form-label">{label}</label>
+    <input className="form-control" type="file" id={id} name={id}
+     accept="image/*" onChange={handleImageChange} />
     </div>
   );
 }
@@ -55,27 +69,57 @@ function ListCategory({id, categories}) {
   );
 }
 
+
+function OptionCategory({categories}) {
+  const option = (category) => (
+    <option value={category.id} key={category.id}>{category.name}</option>
+  );
+  return (categories.map(option));
+}
+
 function SelectCategory({categories}) {
   const id = 'category';
   const label = 'Category';
   return (
+    <select className="form-select mb-3" aria-label="Default select example"
+    id={id} name={id} defaultValue={label}>
+      <OptionCategory categories={categories} />
+    </select>
+  );
+}
+
+function SelectDatalistCategory({categories}) {
+  const id = 'category';
+  const label = 'Category';
+  return (
     <div className="form-floating mb-3">
-      <input className="form-control" list="datalistOptions" placeholder="" id={id}/>
-      <label for={id}>{label}</label>
+      <input className="form-control" list="datalistOptions" placeholder=""
+      id={id} name={id}/>
+      <label forhtml={id}>{label}</label>
       <ListCategory id="datalistOptions" categories={categories} />
     </div>
-
   );
+}
+
+function Button() {
+  return (
+    <button type="submit" className="btn btn-primary ">Confirm</button>
+  );
+}
+
+function postInsertion(data) {
+  return 'test';
 }
 
 function FormItem({categories}) {
   return (
-    <form>
+    <form action="/api/products/insert" method="post">
       <InputName />
       <Description />
       <InputPrice />
       <InputImage />
       <SelectCategory categories={categories} />
+      <Button />
     </form>
   );
 }
@@ -84,7 +128,7 @@ function FormItem({categories}) {
 export default function Insert({categories}) {
   const title = 'Insert';
   return (
-    <div>
+    <>
       <Head>
         <title>{title}</title>
         <link rel="icon" href="/favicon.ico" />
@@ -98,19 +142,17 @@ export default function Insert({categories}) {
       </main>
 
       <footer></footer>
-    </div>
+    </>
   );
 }
 
-export async function getServerSideProps(context) {
-
-  const data = await prisma.category.findMany({
-    select: {
-      name: true,
-    },
-  })
-  const categories = data.map((category) => (category.name));
+export async function getStaticProps(context) {
+  const post = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`)
+      .then(r => r.json());
+  let categories = post.data
+  console.log(categories);
   return {
     props: { categories }, 
+    revalidate: 5,
   };
 }

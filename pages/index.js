@@ -25,14 +25,13 @@ export default function Home({ products }) {
           ))}
         </div>
       </main>
-
       <footer></footer>
     </div>
   );
 }
 
-//export async function getStaticProps(context) {
-export async function getServerSideProps(context) {
+export async function getStaticProps(context) {
+//export async function getServerSideProps(context) {
   const data = await prisma.product.findMany({
     include: {
       category: true,
@@ -46,6 +45,7 @@ export async function getServerSideProps(context) {
   }));
   return {
     props: { products },
+    revalidate: 5, 
   };
 
 }
