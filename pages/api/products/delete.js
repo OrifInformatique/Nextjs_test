@@ -12,6 +12,5 @@ export default async function handler(req, res) {
       id: body.id
     },
   });
-  res.redirect(308, '.');
 }
 

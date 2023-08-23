@@ -1,58 +1,37 @@
 
 import Head from 'next/head';
+import { useState } from 'react'
 import Navbar from '../components/Navbar';
+import Link from "next/link";
+import { useRouter } from 'next/router'
 import {InputName, Description, InputPrice, InputImage, OptionCategory,
   SelectCategory, Button} from '../components/Form';
 
-
-
-
-function ListCategory({id, categories}) {
+function HiddenInput({idItem}) {
   return (
-    <datalist id={id}>
-    {categories.map((category) => (
-      <option value={category} />
-    ))}
-    </datalist>
-  );
+    <input type="hidden" value={idItem}/>
+  )
 }
 
-
-
-function SelectDatalistCategory({categories}) {
-  const id = 'category';
-  const label = 'Category';
+function FormItem({categories, idItem}) {
   return (
-    <div className="form-floating mb-3">
-      <input className="form-control" list="datalistOptions" placeholder=""
-      id={id} name={id}/>
-      <label forhtml={id}>{label}</label>
-      <ListCategory id="datalistOptions" categories={categories} />
-    </div>
-  );
-}
-
-
-function postInsertion(data) {
-  return 'test';
-}
-
-function FormItem({categories}) {
-  return (
-    <form action="/api/products/insert" method="post">
+    <form action="/api/products/update" method="post">
       <InputName />
       <Description />
       <InputPrice />
       <InputImage />
       <SelectCategory categories={categories} />
       <Button />
+      <HiddenInput idItem={idItem}/>
     </form>
   );
 }
 
 
 export default function Page({categories}) {
-  const title = 'Insert';
+  const router = useRouter()
+  const title = 'Update';
+  const id = router.query.id;
   return (
     <>
       <Head>
@@ -64,7 +43,7 @@ export default function Page({categories}) {
 
       <main className="container">
         <h1 className="text-center">{title}</h1>
-        <FormItem categories={categories} />
+        <FormItem categories={categories} idItem={id}/>
       </main>
 
       <footer></footer>

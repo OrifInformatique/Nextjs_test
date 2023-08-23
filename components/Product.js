@@ -1,8 +1,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/router'
+
+
 
 export default function Product({ product }) {
   const { id, name, description, price, image, category } = product;
+  const router = useRouter();
+  const label = {delete : 'Delete',
+    edit: 'edit'};
 
   return (
     <div
@@ -23,13 +29,14 @@ export default function Product({ product }) {
         <span className="badge bg-secondary">
           {category?.name}
         </span>
-        <button onClick={() => handleDelete(id)} className="btn btn-primary">Delete</button>
+        <button onClick={() => handleDelete(id, router)} className="btn btn-primary">{label.delete}</button>
+        <Link href={{ pathname: '/update', query: { id: id } }} className="btn btn-secondary">{label.edit}</Link>
       </div>
     </div>
   );
 }
 
-async function handleDelete(id) {
+async function handleDelete(id, router) {
   console.log(id);
   await fetch("../api/products/delete", {
       method: "DELETE",
@@ -37,4 +44,5 @@ async function handleDelete(id) {
       
       body: JSON.stringify({ id: id }),
     })
+  router.reload()
 }
