@@ -9,7 +9,7 @@ import {InputName, Description, InputPrice, InputImage, OptionCategory,
 
 function HiddenInput({idItem}) {
   return (
-    <input type="hidden" value={idItem}/>
+    <input type="hidden" name="idItem" value={idItem} />
   )
 }
 

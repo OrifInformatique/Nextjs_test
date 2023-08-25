@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   body.image = '/images/helmet.jpg';
 
   const product = await prisma.product.update({
-    where: {id: body.idItem},
+    where: {id: +body.idItem},
     data: {
       name: body.name,
       description: body.description,

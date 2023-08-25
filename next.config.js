@@ -13,4 +13,13 @@ module.exports = {
       },
     ]
   },
+  async redirects() {
+    return [
+      {
+        source: '/api/products',
+        destination: '/',
+        permanent: true,
+      },
+    ]
+  },
 }

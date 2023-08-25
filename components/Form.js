@@ -1,12 +1,12 @@
 
 import { useState } from 'react'
-export function InputName() {
+export function InputName({oldName}) {
   const id = "name";
   const label = "Name";
   return (
     <div className="form-floating mb-3">
       <input type="text" className="form-control" id={id} name={id}
-      placeholder=""/> 
+      placeholder="" defaultValue={oldName}/> 
       <label forhtml={id}>{label}</label>
     </div>
   );
