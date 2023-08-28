@@ -29,8 +29,14 @@ export default function Product({ product }) {
         <span className="badge bg-secondary">
           {category?.name}
         </span>
-        <button onClick={() => handleDelete(id, router)} className="btn btn-primary">{label.delete}</button>
-        <Link href={{ pathname: '/update', query: { id: id } }} className="btn btn-secondary">{label.edit}</Link>
+        <div className="d-flex gap-2 py-2">
+          <Link href={{ pathname: '/update', query: { id: id } }}
+            className="btn btn-secondary">{label.edit}
+          </Link>
+          <button onClick={() => handleDelete(id, router)}
+            className="btn btn-danger">{label.delete}
+          </button>
+        </div>
       </div>
     </div>
   );

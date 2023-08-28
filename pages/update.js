@@ -1,4 +1,5 @@
 
+
 import Head from 'next/head';
 import { useState } from 'react'
 import Navbar from '../components/Navbar';
@@ -13,14 +14,15 @@ function HiddenInput({idItem}) {
   )
 }
 
-function FormItem({categories, idItem}) {
+function FormItem({categories, idItem, old}) {
+  console.log(old);
   return (
     <form action="/api/products/update" method="post">
-      <InputName />
-      <Description />
-      <InputPrice />
-      <InputImage />
-      <SelectCategory categories={categories} />
+      <InputName defaultValue={old.name}/>
+      <Description defaultValue={old.description}/>
+      <InputPrice defaultValue={old.price}/>
+      <InputImage defaultValue={'/images/helmet.jpg'}/>
+      <SelectCategory categories={categories} defaultValue={old.category_id}/>
       <Button />
       <HiddenInput idItem={idItem}/>
     </form>
@@ -28,7 +30,8 @@ function FormItem({categories, idItem}) {
 }
 
 
-export default function Page({categories}) {
+
+export default function Page({categories, product}) {
   const router = useRouter()
   const title = 'Update';
   const id = router.query.id;
@@ -43,7 +46,7 @@ export default function Page({categories}) {
 
       <main className="container">
         <h1 className="text-center">{title}</h1>
-        <FormItem categories={categories} idItem={id}/>
+        <FormItem categories={categories} idItem={id} old={product}/>
       </main>
 
       <footer></footer>
@@ -51,13 +54,21 @@ export default function Page({categories}) {
   );
 }
 
-export async function getStaticProps(context) {
+//export async function getStaticProps(context) {
+export async function getServerSideProps(req, res) {
+  const id = req.query.id;
+
   const post = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`)
       .then(r => r.json());
-  let categories = post.data
-  console.log(categories);
+  const categories = post.data;
+
+  const get = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/products/find?id=${id}`)
+    .then(r => r.json());
+  const product = get.data;
+  // const product = products.filter((product) => product.id === req.query.id);
+
   return {
-    props: { categories }, 
-    revalidate: 5,
+    props: { categories, product }, 
   };
 }

@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Product from '../components/Product';
-import prisma from '../lib/prisma';
+// import prisma from '../lib/prisma';
 import Navbar from '../components/Navbar';
 
 
@@ -32,14 +32,18 @@ export default function Home({ products }) {
 
 export async function getStaticProps(context) {
 //export async function getServerSideProps(context) {
-  const data = await prisma.product.findMany({
-    include: {
-      category: true,
-    },
-  });
+  // const data = await prisma.product.findMany({
+  //   include: {
+  //     category: true,
+  //   },
+  // });
+  const get = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/products/find-with-category`)
+      .then(r => r.json());
+  const product = get.data;
 
   //convert decimal value to string to pass through as json
-  const products = data.map((product) => ({
+  const products = product.map((product) => ({
     ...product,
     price: product.price.toString(),
   }));
