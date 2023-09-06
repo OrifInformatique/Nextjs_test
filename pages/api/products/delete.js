@@ -12,5 +12,6 @@ export default async function handler(req, res) {
       id: body.id
     },
   });
+  res.status(200).json({ msg: '200'});
 }
 

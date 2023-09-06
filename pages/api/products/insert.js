@@ -5,7 +5,9 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ msg: 'Method not allowed' });
   }
+
   let body = req.body;
+
   body.image = '/images/helmet.jpg';
 
   const product = await prisma.product.create({
@@ -19,6 +21,6 @@ export default async function handler(req, res) {
       },
     },
   });
-  res.redirect(308, './../../');
+  res.status(200).json({ msg: '200'});
 }
 

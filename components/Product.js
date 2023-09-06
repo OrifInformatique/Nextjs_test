@@ -50,5 +50,6 @@ async function handleDelete(id, router) {
       
       body: JSON.stringify({ id: id }),
     })
-  router.reload()
+  // router.reload()
+  router.push(`/`);
 }

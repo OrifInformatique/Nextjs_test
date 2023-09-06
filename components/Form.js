@@ -1,5 +1,5 @@
-
 import { useState } from 'react'
+
 export function InputName({defaultValue}) {
   const id = "name";
   const label = "Name";

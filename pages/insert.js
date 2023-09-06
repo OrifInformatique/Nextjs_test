@@ -1,9 +1,9 @@
-
 import Head from 'next/head';
 import Navbar from '../components/Navbar';
 import {InputName, Description, InputPrice, InputImage, OptionCategory,
   SelectCategory, Button} from '../components/Form';
 
+import { useRouter } from 'next/router'
 
 
 
@@ -37,9 +37,36 @@ function postInsertion(data) {
   return 'test';
 }
 
-function FormItem({categories}) {
+async function onSubmit(event, router) {
+  console.log(router);
+  console.log(typeof router);
+  event.preventDefault();
+  const data = {
+    name: event.target.name.value,
+    description: event.target.description.value,
+    price: event.target.price.value,
+    image: event.target.image.value,
+    category: event.target.category.value,
+  };
+
+  const JSONdata = JSON.stringify(data);
+  const endpoint = '/api/products/insert';
+  const option = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSONdata
+  };
+  
+  const response = await fetch(endpoint, option);
+  router.push(`/`);
+  //const data = await response.json();
+}
+
+function FormItem({categories, router}) {
   return (
-    <form action="/api/products/insert" method="post">
+    <form onSubmit={() => onSubmit(event, router)}>
       <InputName />
       <Description />
       <InputPrice />
@@ -53,6 +80,7 @@ function FormItem({categories}) {
 
 export default function Page({categories}) {
   const title = 'Insert';
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -64,7 +92,7 @@ export default function Page({categories}) {
 
       <main className="container">
         <h1 className="text-center">{title}</h1>
-        <FormItem categories={categories} />
+        <FormItem categories={categories} router={router} />
       </main>
 
       <footer></footer>
