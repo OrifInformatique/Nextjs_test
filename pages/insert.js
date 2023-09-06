@@ -38,8 +38,6 @@ function postInsertion(data) {
 }
 
 async function onSubmit(event, router) {
-  console.log(router);
-  console.log(typeof router);
   event.preventDefault();
   const data = {
     name: event.target.name.value,

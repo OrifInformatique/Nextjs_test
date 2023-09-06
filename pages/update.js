@@ -14,10 +14,35 @@ function HiddenInput({idItem}) {
   )
 }
 
-function FormItem({categories, idItem, old}) {
+async function onSubmit(event, router) {
+  event.preventDefault();
+  const data = {
+    name: event.target.name.value,
+    description: event.target.description.value,
+    price: event.target.price.value,
+    image: event.target.image.value,
+    category: event.target.category.value,
+    idItem: event.target.idItem.value
+  };
+
+  const JSONdata = JSON.stringify(data);
+  const endpoint = '/api/products/update';
+  const option = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSONdata
+  };
+  
+  const response = await fetch(endpoint, option);
+  router.push(`/`);
+}
+
+function FormItem({categories, idItem, old, router}) {
   console.log(old);
   return (
-    <form action="/api/products/update" method="post">
+    <form onSubmit={() => onSubmit(event, router)}>
       <InputName defaultValue={old.name}/>
       <Description defaultValue={old.description}/>
       <InputPrice defaultValue={old.price}/>
@@ -46,7 +71,9 @@ export default function Page({categories, product}) {
 
       <main className="container">
         <h1 className="text-center">{title}</h1>
-        <FormItem categories={categories} idItem={id} old={product}/>
+        <FormItem categories={categories} idItem={id} old={product}
+          router={router}
+        />
       </main>
 
       <footer></footer>
