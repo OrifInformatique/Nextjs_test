@@ -41,6 +41,9 @@ export async function getStaticProps(context) {
     `${process.env.NEXT_PUBLIC_API_URL}/products/find-with-category`)
       .then(r => r.json());
   const product = get.data;
+  console.log('2023-09-13');
+  console.log(product);
+  console.log('2023-09-13');
 
   //convert decimal value to string to pass through as json
   const products = product.map((product) => ({

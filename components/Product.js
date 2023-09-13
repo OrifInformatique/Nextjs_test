@@ -1,12 +1,13 @@
+'use client';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/router'
+import { useRouter, redirect } from 'next/navigation';
 
 
 
 export default function Product({ product }) {
-  const { id, name, description, price, image, category } = product;
   const router = useRouter();
+  const { id, name, description, price, image, category } = product;
   const label = {delete : 'Delete',
     edit: 'edit'};
 
@@ -43,13 +44,12 @@ export default function Product({ product }) {
 }
 
 async function handleDelete(id, router) {
-  console.log(id);
   await fetch("../api/products/delete", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       
       body: JSON.stringify({ id: id }),
     })
-  // router.reload()
-  router.push(`/`);
+    router.refresh();
+  //redirect('/');
 }

@@ -1,10 +1,10 @@
+'use client';
 import Head from 'next/head';
-import Navbar from '../components/Navbar';
+import Navbar from '../../components/Navbar';
 import {InputName, Description, InputPrice, InputImage, OptionCategory,
-  SelectCategory, Button} from '../components/Form';
+  SelectCategory, Button} from '../../components/Form';
 
-import { useRouter } from 'next/router'
-
+import { redirect } from 'next/navigation'
 
 
 function ListCategory({id, categories}) {
@@ -32,39 +32,36 @@ function SelectDatalistCategory({categories}) {
   );
 }
 
-
-function postInsertion(data) {
-  return 'test';
-}
-
-async function onSubmit(event, router) {
-  event.preventDefault();
-  const data = {
-    name: event.target.name.value,
-    description: event.target.description.value,
-    price: event.target.price.value,
-    image: event.target.image.value,
-    category: event.target.category.value,
-  };
-
-  const JSONdata = JSON.stringify(data);
-  const endpoint = '/api/products/insert';
+async function insertAPI(formData) {
+  let json = {};
+  for (const [key, value] of formData) {
+    json[key] = value;
+  }
+  json = JSON.stringify(json);
+  console.log('2023-09-13T11:18:17+02:00');
+  console.log(json);
+  console.log('2023-09-13T11:18:17+02:00');
+  const endpoint = 'http://localhost:3000/api/products/insert';
   const option = {
-    method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSONdata
+    method: 'POST',
+    body: json,
   };
-  
   const response = await fetch(endpoint, option);
-  router.push(`/`);
-  //const data = await response.json();
+  return response;
 }
 
-function FormItem({categories, router}) {
+async function onSubmit(formData) {
+  await insertAPI(formData);
+  redirect('/');
+
+}
+
+function FormItem({categories}) {
   return (
-    <form onSubmit={() => onSubmit(event, router)}>
+    <form action={onSubmit}>
       <InputName />
       <Description />
       <InputPrice />
@@ -76,9 +73,9 @@ function FormItem({categories, router}) {
 }
 
 
-export default function Page({categories}) {
+export default async function Page() {
+  const categories = await getStaticProps();
   const title = 'Insert';
-  const router = useRouter();
   return (
     <>
       <Head>
@@ -90,7 +87,7 @@ export default function Page({categories}) {
 
       <main className="container">
         <h1 className="text-center">{title}</h1>
-        <FormItem categories={categories} router={router} />
+        <FormItem categories={categories} />
       </main>
 
       <footer></footer>
@@ -98,13 +95,10 @@ export default function Page({categories}) {
   );
 }
 
-export async function getStaticProps(context) {
-  const post = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`)
-      .then(r => r.json());
-  let categories = post.data
-  console.log(categories);
-  return {
-    props: { categories }, 
-    revalidate: 5,
-  };
+async function getStaticProps() {
+  const option = { next: { revalidate: 5 } };
+  const post = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`,
+    option).then(r => r.json());
+  let categories = post.data;
+  return categories;
 }
