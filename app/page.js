@@ -1,10 +1,10 @@
 import Head from 'next/head';
 import Product from '../components/Product';
 // import prisma from '../lib/prisma';
-import Navbar from '../components/Navbar';
+import Navbar from './Navbar';
 
 
-export default async function Home() {
+const Home = async () => {
   const products = await getStaticProps();
   const title = 'Home';
   return (
@@ -29,19 +29,21 @@ export default async function Home() {
       <footer></footer>
     </div>
   );
-}
+};
 
-async function getStaticProps() {
+export default Home;
+
+const getStaticProps = async () => {
   // const option = { next: { revalidate: 0 } };
   const option = { cache: 'no-store' };
   const get = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/products/find-with-category`, option)
-      .then(r => r.json());
-  const product = get.data;
+    `${process.env.NEXT_PUBLIC_API_URL}/products/find-with-category`, option);
+  const r = await get.json();
+  const product = await r.data;
 
   let products = product.map((product) => ({
     ...product,
     price: product.price.toString(),
   }));
   return products;
-}
+};

@@ -1,13 +1,13 @@
 'use client';
 import Head from 'next/head';
-import Navbar from '../../components/Navbar';
+import  Navbar  from '../Navbar';
 import {InputName, Description, InputPrice, InputImage, OptionCategory,
   SelectCategory, Button} from '../../components/Form';
 
-import { redirect } from 'next/navigation'
+import { redirect } from 'next/navigation';
 
 
-function ListCategory({id, categories}) {
+const ListCategory = ({id, categories}) => {
   return (
     <datalist id={id}>
     {categories.map((category) => (
@@ -15,11 +15,11 @@ function ListCategory({id, categories}) {
     ))}
     </datalist>
   );
-}
+};
 
 
 
-function SelectDatalistCategory({categories}) {
+const SelectDatalistCategory = ({categories}) => {
   const id = 'category';
   const label = 'Category';
   return (
@@ -30,9 +30,9 @@ function SelectDatalistCategory({categories}) {
       <ListCategory id="datalistOptions" categories={categories} />
     </div>
   );
-}
+};
 
-async function insertAPI(formData) {
+const insertAPI = async (formData) => {
   let json = {};
   for (const [key, value] of formData) {
     json[key] = value;
@@ -51,15 +51,15 @@ async function insertAPI(formData) {
   };
   const response = await fetch(endpoint, option);
   return response;
-}
+};
 
-async function onSubmit(formData) {
+const onSubmit = async (formData) => {
   await insertAPI(formData);
   redirect('/');
 
-}
+};
 
-function FormItem({categories}) {
+const FormItem = ({categories}) => {
   return (
     <form action={onSubmit}>
       <InputName />
@@ -70,10 +70,10 @@ function FormItem({categories}) {
       <Button />
     </form>
   );
-}
+};
 
 
-export default async function Page() {
+const Page = async () => {
   const categories = await getStaticProps();
   const title = 'Insert';
   return (
@@ -93,12 +93,14 @@ export default async function Page() {
       <footer></footer>
     </>
   );
-}
+};
 
-async function getStaticProps() {
+export default Page;
+
+const getStaticProps = async () => {
   const option = { next: { revalidate: 5 } };
   const post = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`,
     option).then(r => r.json());
   let categories = post.data;
   return categories;
-}
+};

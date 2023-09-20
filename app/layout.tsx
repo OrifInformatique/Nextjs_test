@@ -8,11 +8,12 @@ export const metadata: Metadata = {
   description: 'Welcome to Next.js',
 }
 
-export default function RootLayout({ children, }: {children: React.ReactNode}) {
+const RootLayout = ({ children, }: {children: React.ReactNode}) => {
   return (
     <html lang="en" data-bs-theme="light">
       <body>{children}</body>
     </html>
   )
-}
+};
+export default RootLayout;
 

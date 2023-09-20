@@ -3,9 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter, redirect } from 'next/navigation';
 
-
-
-export default function Product({ product }) {
+const Product = ({ product }) => {
   const router = useRouter();
   const { id, name, description, price, image, category } = product;
   const label = {delete : 'Delete',
@@ -41,9 +39,10 @@ export default function Product({ product }) {
       </div>
     </div>
   );
-}
+};
+export default Product;
 
-async function handleDelete(id, router) {
+const handleDelete = async (id, router) => {
   await fetch("../api/products/delete", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
@@ -52,4 +51,4 @@ async function handleDelete(id, router) {
     })
     router.refresh();
   //redirect('/');
-}
+};
