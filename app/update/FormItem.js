@@ -1,33 +1,20 @@
-'use client'
-import { InputName, Description, InputPrice, InputImage, OptionCategory,
-  SelectCategory, Button } from '../../components/Form';
+'use client';
+import { InputName, Description, InputPrice, InputImage, SelectCategory,
+  Button } from '../Form';
 import { redirect } from 'next/navigation';
 
-const updateAPI = async event => {
-  event.preventDefault();
-  const data = {
-    name: event.target.name.value,
-    description: event.target.description.value,
-    price: event.target.price.value,
-    image: event.target.image.value,
-    category: event.target.category.value,
-    idItem: event.target.idItem.value,
-  };
-  const JSONdata = JSON.stringify(data);
+const updateAPI = async formData => {
   const endpoint = '/api/products/update';
   const option = {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSONdata
+    body: formData
   };
   const response = await fetch(endpoint, option);
   return response;
 };
 
-const onSubmit = async event => {
-  await updateAPI(event);
+const onSubmit = async formData => {
+  await updateAPI(formData);
   redirect('/');
 
 };
@@ -40,7 +27,7 @@ const HiddenInput = ({ idItem }) => {
 
 export const FormItem = ({categories, idItem, old}) => {
   return (
-    <form action={() => onSubmit(event)}>
+    <form action={onSubmit}>
       <InputName defaultValue={old.name} />
       <Description defaultValue={old.description} />
       <InputPrice defaultValue={old.price} />

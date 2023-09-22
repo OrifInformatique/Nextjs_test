@@ -1,19 +1,18 @@
-import Head from 'next/head';
 import Navbar from '../Navbar';
 import Link from "next/link";
 import { FormItem } from './FormItem';
 
+export const metadata = {
+  title: 'Update',
+  icon: '/favicon.ico',
+};
+
 const Page = async ({ params, searchParams }) => {
   const [ categories, product ] = await getServerSideProps(searchParams.id);
   const id = searchParams.id;
-  const title = 'Update';
+  const title = metadata.title;
   return (
     <>
-      <Head>
-        <title>{title}</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <Navbar />
 
       <main className="container">
@@ -37,7 +36,6 @@ const getServerSideProps = async (id) => {
     `${process.env.NEXT_PUBLIC_API_URL}/products/find?id=${id}`)
     .then(r => r.json());
   const product = await get.data;
-  // const product = products.filter((product) => product.id === req.query.id);
 
   return [ categories, product ];
 };

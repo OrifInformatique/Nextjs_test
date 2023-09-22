@@ -1,11 +1,11 @@
-'use client';
-import Head from 'next/head';
 import  Navbar  from '../Navbar';
-import {InputName, Description, InputPrice, InputImage, OptionCategory,
-  SelectCategory, Button} from '../../components/Form';
-
 import { redirect } from 'next/navigation';
+import { FormItem } from './FormItem';
 
+export const metadata = {
+  title: 'Insert',
+  icon: '/favicon.ico',
+};
 
 const ListCategory = ({id, categories}) => {
   return (
@@ -32,56 +32,15 @@ const SelectDatalistCategory = ({categories}) => {
   );
 };
 
-const insertAPI = async (formData) => {
-  let json = {};
-  for (const [key, value] of formData) {
-    json[key] = value;
-  }
-  json = JSON.stringify(json);
-  console.log('2023-09-13T11:18:17+02:00');
-  console.log(json);
-  console.log('2023-09-13T11:18:17+02:00');
-  const endpoint = 'http://localhost:3000/api/products/insert';
-  const option = {
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    method: 'POST',
-    body: json,
-  };
-  const response = await fetch(endpoint, option);
-  return response;
-};
 
-const onSubmit = async (formData) => {
-  await insertAPI(formData);
-  redirect('/');
 
-};
-
-const FormItem = ({categories}) => {
-  return (
-    <form action={onSubmit}>
-      <InputName />
-      <Description />
-      <InputPrice />
-      <InputImage />
-      <SelectCategory categories={categories} />
-      <Button />
-    </form>
-  );
-};
 
 
 const Page = async () => {
   const categories = await getStaticProps();
-  const title = 'Insert';
+  const title = metadata.title;
   return (
     <>
-      <Head>
-        <title>{title}</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
 
       <Navbar />
 

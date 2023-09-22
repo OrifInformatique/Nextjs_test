@@ -1,20 +1,17 @@
-import Head from 'next/head';
-import Product from '../components/Product';
-// import prisma from '../lib/prisma';
+import Product from './Product';
 import Navbar from './Navbar';
 
+export const metadata = {
+  title: 'Home',
+  icon: '/favicon.ico',
+};
 
 const Home = async () => {
   const products = await getStaticProps();
-  const title = 'Home';
+  const title = metadata.title;
   return (
     <div>
-      <Head>
-        <title>{title}</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
     <Navbar />
-
       <main className="container">
         <h1 className="text-center">{title}</h1>
         <p className="text-center">
