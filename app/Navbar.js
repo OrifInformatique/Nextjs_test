@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-function NavLink({href, label}) {
+const NavLink = ({href, label}) => {
   return (
     <div key={label}>
       <li className="nav-item">
@@ -9,9 +9,9 @@ function NavLink({href, label}) {
     </div>
   )
 
-}
+};
 
-export default function Narbar() {
+const Narbar = () => {
   const links = [];
   links[0] = ['../insert', 'Insert'];
   const titleSite = 'Shop';
@@ -30,6 +30,5 @@ export default function Narbar() {
       </div>
     </nav>
   );
-}
-
-
+};
+export default Narbar;

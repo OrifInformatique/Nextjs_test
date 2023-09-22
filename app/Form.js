@@ -1,6 +1,7 @@
+'use client'
 import { useState } from 'react'
 
-export function InputName({defaultValue}) {
+export const InputName = ({defaultValue}) => {
   const id = "name";
   const label = "Name";
   return (
@@ -10,9 +11,9 @@ export function InputName({defaultValue}) {
       <label forhtml={id}>{label}</label>
     </div>
   );
-}
+};
 
-export function Description({defaultValue}) {
+export const Description = ({defaultValue}) => {
   const id = "description";
   const label = "Description";
   return (
@@ -23,9 +24,9 @@ export function Description({defaultValue}) {
       <label forhtml={id}>{label}</label>
     </div>
   )
-}
+};
 
-export function InputPrice({defaultValue}) {
+export const InputPrice = ({defaultValue}) => {
   const id = "price";
   const label = "Price";
   return (
@@ -35,9 +36,9 @@ export function InputPrice({defaultValue}) {
       <label forhtml={id}>{label}</label>
     </div>
   );
-}
+};
 
-export function InputImage({defaultValue}) {
+export const InputImage = ({defaultValue}) => {
   const label = 'Image';
   const id = 'image';
   //const [value, setValue] = useState('/public/images/helmet.jpg');
@@ -56,17 +57,17 @@ export function InputImage({defaultValue}) {
     />
     </div>
   );
-}
+};
 
-export function OptionCategory({categories, defaultValue}) {
+export const OptionCategory = ({categories, defaultValue}) => {
     const option = (category) => (
       <option value={category.id} key={category.id} >{category.name} </option>
     );
   
   return (categories.map(option));
-}
+};
 
-export function SelectCategory({categories, defaultValue}) {
+export const SelectCategory = ({categories, defaultValue}) => {
   const id = 'category';
   const label = 'Category';
   return (
@@ -79,10 +80,10 @@ export function SelectCategory({categories, defaultValue}) {
       <label forhtml={id}>{label}</label>
     </div>
   );
-}
+};
 
-export function Button() {
+export const Button = () => {
   return (
     <button type="submit" className="btn btn-primary ">Confirm</button>
   );
-}
+};
