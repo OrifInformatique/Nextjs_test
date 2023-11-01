@@ -1,9 +1,9 @@
-# Next.js + MySQL + modif
+# Next.js + MySQL + Personal modify
 This is a [Next.js](https://nextjs.org/) project that uses [Prisma](https://www.prisma.io/) 
 ## Prerequisites
-- [Node.js](https://nodejs.org/en/download/) `winget install --id OpenJS.NodeJS.LTS` on windows
-- npm
-- a mariadb or mysql database
+- [Node.js](https://nodejs.org/en/download/) `winget install --id OpenJS.NodeJS.LTS` on Windows
+- NPM
+- a MariaDB or MySQL database
 ## Download
 ```sh
 git clone 'https://github.com/OrifInformatique/Nextjs_test.git'
@@ -19,7 +19,7 @@ create a .env.local file
 ```sh
 touch .env.local
 ```
-and put it in the url of the api
+and put it in the URL of the API
 ```text
 NEXT_PUBLIC_API_URL=http://localhost:3000/api
 ```
@@ -36,7 +36,7 @@ to put in .env
 ```text
 mysql://<USERNAME>:<PLAIN_TEXT_PASSWORD>@<ACCESS_HOST_URL>/<DATABASE_NAME>?sslaccept=strict
 ```
-exemple with the database of xampp on windows11 (here the databae names db20230815)
+Example with the database of xampp on windows11 (here the database names db20230815)
 ```text
 DATABASE_URL=mysql://root@localhost/db20230815
 ```
@@ -55,7 +55,7 @@ npm run dev
 ```
 Open your browser at [localhost:3000](localhost:3000) to see the running application.
 
-## troubleshoot
+## Troubleshoot
 for `npx prisma db push` with `Error: Unknown binaryTarget debian-openssl-3.0.x and no custom binaries were provided` output:
 ```sh
 npm install prisma --save-dev
